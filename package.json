@@ -1,0 +1,24 @@
+{
+  "name": "ahj-heroku-test-backend-koa",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "prestart": "npm install",
+    "start": "forever -a server.js",
+    "watch": "forever -a -w server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MKSInc/AHJ-HEROKU-test-Backend-Koa.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MKSInc/AHJ-HEROKU-test-Backend-Koa/issues"
+  },
+  "homepage": "https://github.com/MKSInc/AHJ-HEROKU-test-Backend-Koa#readme",
+  "dependencies": {
+    "forever": "^3.0.4",
+    "koa": "^2.13.0"
+  }
+}
