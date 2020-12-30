@@ -39,7 +39,7 @@ app.use(async (ctx, next) => {
 
 app.use(async (ctx) => {
    console.log('start 3');
-   ctx.body = 'Hello world!';
+   ctx.body = `Koa server has been started on port ${PORT} ...`;
    console.log('end 3');
 });
 

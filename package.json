@@ -1,7 +1,7 @@
 {
   "name": "ahj-heroku-test-backend-koa",
   "version": "1.0.0",
-  "main": "index.js",
+  "private": true,
   "scripts": {
     "prestart": "npm install",
     "start": "forever -a server.js",
