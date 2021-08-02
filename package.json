@@ -19,8 +19,8 @@
   },
   "homepage": "https://github.com/MKSInc/AHJ-HEROKU-test-Backend-Koa#readme",
   "dependencies": {
+    "@koa/cors": "^3.1.0",
     "forever": "^3.0.4",
-    "koa": "^2.13.0",
-    "koa-cors": "0.0.16"
+    "koa": "^2.13.0"
   }
 }

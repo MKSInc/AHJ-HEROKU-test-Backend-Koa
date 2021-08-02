@@ -1,5 +1,5 @@
 const Koa = require('koa');
-const koaCORS = require('koa-cors');
+const koaCORS = require('@koa/cors');
 const app = new Koa();
 
 app.use(koaCORS());
