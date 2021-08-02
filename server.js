@@ -1,66 +1,95 @@
+const cors = require('@koa/cors');
 const Koa = require('koa');
-const koaCORS = require('@koa/cors');
+const koaBody = require('koa-body');
+// const http = require('http');
+
 const app = new Koa();
 
-app.use(koaCORS());
-/*
-app.use(async (ctx, next) => {
-   ctx.response.set({
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'PUT',
-   });
-   await next();
-});*/
+app.use(cors());
 
-app.use((ctx) => {
-   console.log('test');
-   ctx.response.body = 'test';
-});
+app.use(koaBody({
+   urlencoded: true,
+   text: true,
+   json: true,
+   multipart: true,
+}));
 
-/*
-app.use(async (ctx, next) => {
-   const origin = ctx.request.get('Origin');
-   console.log(`--- ${ctx.url} ---`);
-   console.log('origin: ', origin);
-   if (origin) {
-      console.log('origin true');
-   } else {
-      console.log('origin false');
-   }
-
-   console.log('method: ', ctx.request.method);
-   await next();
-});
-
-app.use(async (ctx, next) => {
-   console.log('start 1');
-   await next();
-   console.log('continue 1');
-   const rt = ctx.response.get('X-Response-Time');
-   console.log(`${ctx.method} ${ctx.url} - ${rt}`);
-   console.log('end 1');
-});
-
-app.use(async (ctx, next) => {
-   console.log('start 2');
-   const start = Date.now();
-   await next();
-   console.log('continue 2');
-   const ms = Date.now() - start;
-   ctx.set('X-Response-Time', `${ms}ms`);
-   ctx.set('Access-Control-Allow-Origin', '*');
-   ctx.set('Access-Control-Allow-Methods', 'PUT');
-   console.log('end 2');
-});
+const tickets = new Map();
 
 app.use(async (ctx) => {
-   console.log('start 3');
-   ctx.body = 'Hello world!';
-   console.log('end 3');
+   if (ctx.request.method === 'GET') {
+      let { id } = ctx.request.query;
+      const { method } = ctx.request.query;
+      id = +id;
+      switch (method) {
+         case 'allTickets': {
+            const jsonArr = Array.from(tickets.values());
+            const resp = jsonArr.map((el) => ({
+               id: el.id,
+               name: el.name,
+               status: el.status,
+               created: el.created,
+            }));
+            // console.log(jsonObject);
+            ctx.response.body = resp;
+            return;
+         }
+         case 'ticketById': {
+            // console.log(Array.from(tickets.values()))
+            const answer = JSON.stringify(tickets.get(id));
+            // console.log(answer);
+            ctx.response.body = answer;
+            return;
+         }
+         case 'status': {
+            const { status } = ctx.request.query;
+            // console.log(status);
+            tickets.get(id).status = status;
+            ctx.body = { ok: true };
+            return;
+         }
+         case 'delete': {
+            tickets.delete(+id);
+            ctx.body = { ok: true };
+            return;
+         }
+         default: {
+            ctx.response.status = 404;
+            return;
+         }
+      }
+   } else if (ctx.request.method === 'POST') {
+      // console.log(ctx.request.body);
+      const { taskName, taskDescr, created } = ctx.request.body;
+      const ticketId = tickets.size + 1;
+      tickets.set(ticketId, {
+         id: ticketId,
+         name: taskName,
+         status: false,
+         created,
+         description: taskDescr,
+      });
+      // console.log(Array.from(tickets.values()));
+      ctx.body = { ok: true };
+      return;
+   } else if (ctx.request.method === 'PUT') {
+      const { id, taskName, taskDescr } = ctx.request.body;
+      const ticket = tickets.get(+id);
+      ticket.name = taskName;
+      ticket.description = taskDescr;
+      // console.log(tickets.get(id));
+      ctx.body = { ok: true };
+      return;
+   } else if (ctx.request.method === 'PUT') {
+      const { id, taskName, taskDescr } = ctx.request.body;
+      const ticket = tickets.get(+id);
+      ticket.name = taskName;
+      ticket.description = taskDescr;
+      // console.log(tickets.get(id));
+      ctx.body = { ok: true };
+      return;
+   }
+   ctx.body = { status: 'OK' };
 });
-*/
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-   console.log(`Koa server has been started on port ${PORT} ...`);
-});
+app.listen(7070, () => console.log('Server is works'));
