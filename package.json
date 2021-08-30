@@ -19,9 +19,18 @@
   },
   "homepage": "https://github.com/MKSInc/AHJ-HEROKU-test-Backend-Koa#readme",
   "dependencies": {
-    "@koa/cors": "^3.1.0",
-    "forever": "^3.0.4",
-    "koa": "^2.13.0",
-    "koa-body": "^4.2.0"
+    "forever": "^4.0.1",
+    "http-event-stream": "^0.2.0",
+    "koa": "^2.13.1",
+    "koa-body": "^4.2.0",
+    "koa-router": "^10.1.1",
+    "koa2-cors": "^2.0.6",
+    "uuid": "^8.3.2",
+    "ws": "^8.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.21.2"
   }
 }
